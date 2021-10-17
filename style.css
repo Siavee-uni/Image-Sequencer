@@ -1,0 +1,19 @@
+#player {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    display: inline-block;
+    line-height: 0;
+    overflow: hidden;
+}
+
+#player > * {
+    position: absolute;
+    display: inline-block;
+    visibility: hidden;
+    border: 0;
+}
+
+#player > .show {
+    visibility: visible;
+}

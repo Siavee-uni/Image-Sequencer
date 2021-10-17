@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+      "lib": [
+        "es6",
+        "dom",
+        "dom.iterable"
+      ],
+      "plugins": [
+        {
+          "name": "typescript-lit-html-plugin",
+        },
+      ],
+      "outDir": "./dist/",
+      "moduleResolution": "node",
+      "noImplicitAny": true,
+      "allowSyntheticDefaultImports": true,
+      "sourceMap": true,
+      "module": "es2020",
+      "target": "es6",
+      "jsx": "react",
+      /* "allowJs": true, */
+      "experimentalDecorators": true
+    },
+    "exclude": ["spec","webpack.common.js"],
+  }

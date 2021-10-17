@@ -1,0 +1,22 @@
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+dist
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional REPL history
+.node_repl_history
+
+# dotenv environment variables file
+.env
+.env.test
+
+# Gatsby files
+.cache/
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
