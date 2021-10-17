@@ -22,11 +22,19 @@ const framesPs = 2;
 
 window.addEventListener("load", () => {
   const cenvas = document.getElementById("player");
+  const button = document.getElementById("start");
   if (cenvas) {
     const cenvasImages = cenvas.children;
     const sequenzer = new imageSequenze(images, path, framesPs, cenvas);
-
     sequenzer.init();
-    sequenzer.start(cenvasImages);
+
+    button.addEventListener("mouseenter", () => {
+      sequenzer.start(cenvasImages);
+      console.log("start");
+    });
+    button.addEventListener("mouseleave", () => {
+      sequenzer.reverse(cenvasImages);
+      console.log("reverse");
+    });
   }
 });
