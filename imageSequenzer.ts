@@ -1,3 +1,6 @@
+interface Options {
+  type?: string;
+}
 export class imageSequenze {
   images: string[];
   path: string;
@@ -6,6 +9,7 @@ export class imageSequenze {
   repeater = 0;
   stoppedForwards = false;
   stoppedBackwards = false;
+  loadingElement: HTMLElement;
 
   constructor(
     images: string[],
@@ -23,9 +27,17 @@ export class imageSequenze {
     for (let index = 0; index < this.images.length; index++) {
       const image = this.images[index];
       const imageElement = this.createImage(image);
-
       this.cenvas.appendChild(imageElement);
     }
+
+    this.loadingElement = this.createLoading();
+    this.cenvas.appendChild(this.loadingElement);
+  }
+
+  createLoading() {
+    const div = document.createElement("div");
+    div.classList.add("loading");
+    return div;
   }
 
   start(cenvasImages: HTMLCollection) {
@@ -60,7 +72,6 @@ export class imageSequenze {
     if (this.repeater < 0 || this.stoppedBackwards) {
       return;
     }
-    console.log(this.repeater, cenvasImages);
 
     const element = cenvasImages[this.repeater];
     element.classList.remove("show");
@@ -78,7 +89,6 @@ export class imageSequenze {
     }
 
     const element = cenvasImages[this.repeater];
-    console.log(this.repeater, cenvasImages);
     element.classList.add("show");
 
     if (this.repeater < this.images.length - 1) {
@@ -90,7 +100,7 @@ export class imageSequenze {
 
   createImage(src: string, alt = "", title = "") {
     const img = document.createElement("img");
-    img.src = this.path + src;
+    /* img.src = this.path + src; */
     img.alt = alt;
     img.title = title;
     return img;
@@ -98,5 +108,37 @@ export class imageSequenze {
 
   sleep() {
     return new Promise((resolve) => setTimeout(resolve, this.framesPS));
+  }
+
+  imageLoader(imageUrl: string) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      xhr.open("GET", imageUrl, true);
+      xhr.responseType = "arraybuffer";
+
+      xhr.onprogress = function (e) {
+        if (e.lengthComputable) {
+          // function to update hier:
+          /* progressUpdateCallback((e.loaded / e.total) * 100); */
+        }
+      };
+
+      xhr.onloadend = function () {
+        /* progressUpdateCallback(100); */
+        const options: Options = {};
+        const headers = xhr.getAllResponseHeaders();
+        const typeMatch = headers.match(/^Content-Type\:\s*(.*?)$/im);
+
+        if (typeMatch && typeMatch[1]) {
+          options.type = typeMatch[1];
+        }
+
+        const blob = new Blob([this.response], options);
+
+        resolve(window.URL.createObjectURL(blob));
+      };
+      xhr.send();
+    });
   }
 }

@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+      "emitDecoratorMetadata": true,
       "lib": [
         "es6",
         "dom",
@@ -21,5 +22,6 @@
       /* "allowJs": true, */
       "experimentalDecorators": true
     },
+    
     "exclude": ["spec","webpack.common.js"],
   }

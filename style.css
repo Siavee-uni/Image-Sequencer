@@ -1,9 +1,9 @@
+
 body {
     margin: 0px;
 }
-
 #player {
-    height: 100vh;
+    height: 50vh;
     width: 100%;
     position: relative;
     display: inline-block;
@@ -11,19 +11,19 @@ body {
     overflow: hidden;
 }
 
-#player > * {
-    position: absolute;
-    display: inline-block;
-    visibility: hidden;
-    border: 0;
-    width: 100%;
-    height: auto;
+.loading {
+   
+        position: absolute;
+        z-index: 10;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 1vh;
+        transform-origin: 0 50%;
+        transform: scaleX(0);
+        background: red;
+    
 }
-
-#player > .show {
-    visibility: visible;
-}
-
 
 #start {
     position: absolute;
@@ -40,3 +40,21 @@ body {
     transform: translate(50%, -50%);
     width: 160px;
 }
+/* plugin */
+
+
+#player > img {
+    position: absolute;
+    display: inline-block;
+    visibility: hidden;
+    border: 0;
+    width: 100%;
+    height: auto;
+}
+
+#player > .show {
+    visibility: visible;
+}
+
+
+
