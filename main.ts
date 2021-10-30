@@ -1,4 +1,4 @@
-import { imageSequenze } from "./imageSequenzer.js";
+import { imageLoader, imageSequenze } from "./imageSequenzer.js";
 
 const images = [
   "intro-animation.2.jpg",
@@ -20,34 +20,38 @@ const images = [
 const path = "../images/";
 const framesPs = 2;
 
-window.addEventListener("load", () => {
-  const cenvas = document.getElementById("player");
-  const button = document.getElementById("start");
+const cenvas = document.getElementById("player");
+const sequenzer = new imageSequenze(images, path, framesPs, cenvas);
+sequenzer.init();
 
-  if (cenvas) {
-    const sequenzer = new imageSequenze(images, path, framesPs, cenvas);
-    sequenzer.init();
+const countert = 1 / images.length;
+let counter = countert;
+console.log(counter);
 
-    const cenvasImages = cenvas.children;
-    /*     sequenzer.checkLoading(cenvasImages);
-     */
-    button.addEventListener("mouseenter", () => {
-      sequenzer.start(cenvasImages);
-      console.log("start");
-    });
+for (let index = 0; index < images.length; index++) {
+  const image = images[index];
+  const imagePath = path + image;
 
-    button.addEventListener("mouseleave", () => {
-      sequenzer.reverse(cenvasImages);
-      console.log("reverse");
-    });
-  }
-});
+  imageLoader(imagePath).then((image) => {
+    const htmlImage = sequenzer.createImage(image);
+    cenvas.appendChild(htmlImage);
 
-let myImage = document.getElementById("myImage");
-let imageProgress = document.getElementById("imageProgress");
+    sequenzer.loadingElement.style.transform = `scaleX(${counter})`;
+    counter += countert;
+    console.log(counter);
+  });
+}
 
-let imageLoader = GetImageLoader();
+const button = document.getElementById("start");
 
-imageLoader("../images/intro-animation.2.jpg").then((image) => {
-  console.log(image);
-});
+if (cenvas) {
+  const cenvasImages = cenvas.children;
+
+  button.addEventListener("mouseenter", () => {
+    sequenzer.start(cenvasImages);
+  });
+
+  button.addEventListener("mouseleave", () => {
+    sequenzer.reverse(cenvasImages);
+  });
+}

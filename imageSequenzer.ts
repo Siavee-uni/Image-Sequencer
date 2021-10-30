@@ -24,12 +24,6 @@ export class imageSequenze {
   }
 
   init() {
-    for (let index = 0; index < this.images.length; index++) {
-      const image = this.images[index];
-      const imageElement = this.createImage(image);
-      this.cenvas.appendChild(imageElement);
-    }
-
     this.loadingElement = this.createLoading();
     this.cenvas.appendChild(this.loadingElement);
   }
@@ -100,7 +94,7 @@ export class imageSequenze {
 
   createImage(src: string, alt = "", title = "") {
     const img = document.createElement("img");
-    /* img.src = this.path + src; */
+    img.src = src;
     img.alt = alt;
     img.title = title;
     return img;
@@ -109,36 +103,36 @@ export class imageSequenze {
   sleep() {
     return new Promise((resolve) => setTimeout(resolve, this.framesPS));
   }
-
-  imageLoader(imageUrl: string) {
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-
-      xhr.open("GET", imageUrl, true);
-      xhr.responseType = "arraybuffer";
-
-      xhr.onprogress = function (e) {
-        if (e.lengthComputable) {
-          // function to update hier:
-          /* progressUpdateCallback((e.loaded / e.total) * 100); */
-        }
-      };
-
-      xhr.onloadend = function () {
-        /* progressUpdateCallback(100); */
-        const options: Options = {};
-        const headers = xhr.getAllResponseHeaders();
-        const typeMatch = headers.match(/^Content-Type\:\s*(.*?)$/im);
-
-        if (typeMatch && typeMatch[1]) {
-          options.type = typeMatch[1];
-        }
-
-        const blob = new Blob([this.response], options);
-
-        resolve(window.URL.createObjectURL(blob));
-      };
-      xhr.send();
-    });
-  }
 }
+
+export const imageLoader = (imageUrl: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.open("GET", imageUrl, true);
+    xhr.responseType = "arraybuffer";
+
+    xhr.onprogress = function (e) {
+      if (e.lengthComputable) {
+        // function to update hier:
+        /* progressUpdateCallback((e.loaded / e.total) * 100); */
+      }
+    };
+
+    xhr.onloadend = function () {
+      /* progressUpdateCallback(100); */
+      const options: Options = {};
+      const headers = xhr.getAllResponseHeaders();
+      const typeMatch = headers.match(/^Content-Type\:\s*(.*?)$/im);
+
+      if (typeMatch && typeMatch[1]) {
+        options.type = typeMatch[1];
+      }
+
+      const blob = new Blob([this.response], options);
+
+      resolve(window.URL.createObjectURL(blob));
+    };
+    xhr.send();
+  });
+};
