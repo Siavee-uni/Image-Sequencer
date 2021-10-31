@@ -25,8 +25,7 @@ const sequenzer = new imageSequenze(images, path, framesPs, cenvas);
 sequenzer.init();
 
 const countert = 1 / images.length;
-let counter = countert;
-console.log(counter);
+let counter = 0;
 
 for (let index = 0; index < images.length; index++) {
   const image = images[index];
@@ -35,10 +34,11 @@ for (let index = 0; index < images.length; index++) {
   imageLoader(imagePath).then((image) => {
     const htmlImage = sequenzer.createImage(image);
     cenvas.appendChild(htmlImage);
-
-    sequenzer.loadingElement.style.transform = `scaleX(${counter})`;
+    if (index === 0) {
+      htmlImage.classList.add("show");
+    }
     counter += countert;
-    console.log(counter);
+    sequenzer.loadingElement.style.transform = `scaleX(${counter})`;
   });
 }
 
